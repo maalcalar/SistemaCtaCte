@@ -1,0 +1,4 @@
+Línea 142: la clase MSMask.MaskEdBox del control txtMes no era una clase de control cargada.
+Línea 156: la clase Crystal.CrystalReport del control Crys1 no era una clase de control cargada.
+Línea 171: la clase MSDataGridLib.DataGrid del control DataGrid1 no era una clase de control cargada.
+Línea 236: la clase MSMask.MaskEdBox del control txtMoroso no era una clase de control cargada.

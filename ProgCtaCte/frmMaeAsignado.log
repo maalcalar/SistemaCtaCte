@@ -1,0 +1,6 @@
+Línea 675: la clase MSMask.MaskEdBox del control txtFecTop1 no era una clase de control cargada.
+Línea 688: la clase MSMask.MaskEdBox del control txtFecTop2 no era una clase de control cargada.
+Línea 701: la clase MSMask.MaskEdBox del control txtFecTop3 no era una clase de control cargada.
+Línea 714: la clase MSMask.MaskEdBox del control txtFecTop4 no era una clase de control cargada.
+Línea 727: la clase MSMask.MaskEdBox del control txtFecTop5 no era una clase de control cargada.
+Línea 1170: la clase MSDataGridLib.DataGrid del control DataGrid1 no era una clase de control cargada.

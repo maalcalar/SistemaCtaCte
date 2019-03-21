@@ -1,0 +1,11 @@
+Línea 128: la clase MSDataGridLib.DataGrid del control DataGrid1 no era una clase de control cargada.
+Línea 570: la clase MSMask.MaskEdBox del control txtFecNac no era una clase de control cargada.
+Línea 584: la clase MSMask.MaskEdBox del control txtFecIng no era una clase de control cargada.
+Línea 598: la clase MSMask.MaskEdBox del control txtFecRenu no era una clase de control cargada.
+Línea 612: la clase MSMask.MaskEdBox del control txtFecReso no era una clase de control cargada.
+Línea 626: la clase MSMask.MaskEdBox del control txtFecExclu no era una clase de control cargada.
+Línea 640: la clase MSMask.MaskEdBox del control txtFecExpul no era una clase de control cargada.
+Línea 654: la clase MSMask.MaskEdBox del control txtFecRein no era una clase de control cargada.
+Línea 668: la clase MSMask.MaskEdBox del control txtTope no era una clase de control cargada.
+Línea 681: la clase MSMask.MaskEdBox del control txtFecMat no era una clase de control cargada.
+Línea 695: la clase MSMask.MaskEdBox del control txtFecVip no era una clase de control cargada.
