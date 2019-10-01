@@ -828,6 +828,9 @@ Private Sub MDIForm_Activate()
    If MENUTES = False Then m_teso.Enabled = False Else m_teso.Enabled = True
    If MENUCON = False Then m_con.Enabled = False Else m_con.Enabled = True
    If MENUSER = False Then m_servicio.Enabled = False Else m_servicio.Enabled = True
+   If MENUBCP = False Then m_bcp.Enabled = False Else m_bcp.Enabled = True
+   If MENURPT = False Then m_repteso.Enabled = False Else m_repteso.Enabled = True
+   If MENUCNT = False Then m_cont.Enabled = False Else m_cont.Enabled = True
 End Sub
 
 Private Sub MDIForm_Unload(Cancel As Integer)

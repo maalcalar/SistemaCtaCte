@@ -101,7 +101,7 @@ Begin VB.Form frmMPEnvio
       Width           =   1095
    End
    Begin VB.CommandButton cmdEliminar 
-      Caption         =   "Eliminar Cálculo"
+      Caption         =   "Eliminar Cï¿½lculo"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -566,7 +566,7 @@ Begin VB.Form frmMPEnvio
       Width           =   5655
    End
    Begin VB.Label Label25 
-      Caption         =   "Año"
+      Caption         =   "Aï¿½o"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -667,7 +667,7 @@ Private Sub cmdCalculo_Click()
        wAdeAsig1 As Currency, wAdeAsig2 As Currency, wAdeAsig3 As Currency, wAdeAsig4 As Currency, wAdeAsig5 As Currency, _
        wNetAsig1 As Currency, wNetAsig2 As Currency, wNetAsig3 As Currency, wNetAsig4 As Currency, wNetAsig5 As Currency, _
        wTotAport As Currency, wTotEnvio As Currency, wNetSocio As Currency, _
-       wTotDeuda As Currency, wTotAdela As Currency, wLin As Integer, wMesOld As String
+       wTotDeuda As Currency, wTotAdela As Currency, wLin As Integer, wMesOld As String, wCarF As String
    wAno = wanocia
    wMes = Left(cmbMeses.Text, 2)
    
@@ -703,7 +703,7 @@ Private Sub cmdCalculo_Click()
    Db.CommitTrans
    
    zz = Leerado8("SELECT M.CODSOCIO, M.CODIGO, M.INS, M.CARNETPNP, M.NUMDOC, M.NOMBRE, M.TIPCOB, " _
-             & "         E.APORTE, E.MONEDA, M.ADELANTO, M.DEUDA_PT2, M.E_SOCIO " _
+             & "         E.APORTE, E.MONEDA, M.ADELANTO, M.DEUDA_PT2, M.E_SOCIO, M.CARNETPNP2 " _
              & " FROM MAESOCIO AS M INNER JOIN MAEE_SOCIO AS E " _
              & "   ON M.E_SOCIO = E.E_SOCIO " _
              & " WHERE (M.TIPCOB = '02') AND " _
@@ -738,6 +738,7 @@ Private Sub cmdCalculo_Click()
          wCodAsig4 = 0: wNomAsig4 = "": wTotAsig4 = 0: wDeuAsig4 = 0: wAdeAsig4 = 0: wNetAsig4 = 0
          wCodAsig5 = 0: wNomAsig5 = "": wTotAsig5 = 0: wDeuAsig5 = 0: wAdeAsig5 = 0: wNetAsig5 = 0
          wTotAport = wApo
+         wCarF = CStr(IIf(IsNull(ADO8!carnetpnp2), wCar, ADO8!carnetpnp2))
 '         wTotAdela = ADO8!adelanto
 '         wTotDeuda = ADO8!deuda_pt2
                   
@@ -928,7 +929,7 @@ Private Sub cmdCalculo_Click()
          End If
          wTotEnvio = wNetSocio + _
                      wNetAsig1 + wNetAsig2 + wNetAsig3 + wNetAsig4 + wNetAsig5
-   
+
          If wTotEnvio > 0 Then
             Db.BeginTrans
             Db.Execute ("INSERT INTO TMP_CAJMPCAB " _
@@ -942,7 +943,7 @@ Private Sub cmdCalculo_Click()
             & "   NOMASIG1, NOMASIG2, NOMASIG3, NOMASIG4, NOMASIG5, " _
             & "   TOTENVIO, DSCCAJMP, DSCDIFER, TIPCOB, USU ) " _
             & " VALUES " _
-            & " ('" + wAno + wMes + "', " + Str(wSoc) + ", " + Str(wCod) + ", " + Str(wIns) + ", '" + ADO8!e_socio + "', " + Str(wCar) + ", " _
+            & " ('" + wAno + wMes + "', " + Str(wSoc) + ", " + Str(wCod) + ", " + Str(wIns) + ", '" + ADO8!e_socio + "', '" + wCarF + "', " _
             & "  '" + wDoc + "', '" + wBen + "', '" + Trim(wNom) + "', " _
             & "  '" + Format(Date, "dd/mm/yyyy") + "', null, " _
             & "  " + Str(wTotAport) + ", " + Str(wTotDeuda) + ", " + Str(wTotAdela) + ", " + Str(wNetSocio) + ", " _
@@ -1021,7 +1022,7 @@ Private Sub cmdCreaTXT_Click()
    Dim zz As Long, wRegAct As Long, wRegTot As Long, _
        wAno As String, wMes As String, wCod As Integer, wIns As Integer, _
        wDir As String, wDir2 As String, wFile As String, wSec As String, _
-       wTotSoc As Currency, wTotAsi As Currency, wtotdsc As Currency
+       wTotSoc As Currency, wTotAsi As Currency, wTotDsc As Currency
          
    wAno = txtAnoCab.Text
    wMes = Left(cmbMeses.Text, 2)
@@ -1049,7 +1050,7 @@ Private Sub cmdCreaTXT_Click()
       Do While Not ADO8.EOF
          wTotSoc = ADO8!netsocio
          wTotAsi = ADO8!netasig1 + ADO8!netasig2 + ADO8!netasig3 + ADO8!netasig4 + ADO8!netasig5
-         wtotdsc = wTotSoc + wTotAsi
+         wTotDsc = wTotSoc + wTotAsi
          wSec = IIf(IsNull(ADO8!codbeni), "", ADO8!codbeni)
          
          Print #1, "0019" + _
@@ -1059,7 +1060,7 @@ Private Sub cmdCreaTXT_Click()
                    wSec + _
                    "LE" + ADO8!numdoc + "  " + _
                    wAno + wMes + _
-                   Format(wtotdsc, "0000000.00")
+                   Format(wTotDsc, "0000000.00")
                    
          ADO8.MoveNext
       Loop
@@ -1069,7 +1070,7 @@ Private Sub cmdCreaTXT_Click()
 
    MsgBox "Proceso Termino OK", vbExclamation
 
-   MsgBox "El Archivo Creado se encontrará en " + _
+   MsgBox "El Archivo Creado se encontrarï¿½ en " + _
           App.Path + "\CAJAMP\" + wAno + "-" + wMes
 End Sub
 
@@ -1130,7 +1131,7 @@ Private Sub cmdExportar_Click()
    
    Dim aa As Integer, I As Integer, Heading(9) As String, wRegAct As Integer, wRegTot As Integer
    Dim wNom As String, wAno As String, wMes As String, _
-       wTotSoc As Currency, wTotAsi As Currency, wtotdsc As Currency
+       wTotSoc As Currency, wTotAsi As Currency, wTotDsc As Currency
    wAno = wanocia
    wMes = Left(cmbMeses.Text, 2)
    
@@ -1198,7 +1199,7 @@ Private Sub cmdExportar_Click()
          
          wTotSoc = ADO3!netsocio
          wTotAsi = ADO3!netasig1 + ADO3!netasig2 + ADO3!netasig3 + ADO3!netasig4 + ADO3!netasig5
-         wtotdsc = wTotSoc + wTotAsi
+         wTotDsc = wTotSoc + wTotAsi
          
          objExcel.Columns(H + 0).Select
          objExcel.Selection.NumberFormat = "@"
@@ -1232,7 +1233,7 @@ Private Sub cmdExportar_Click()
          objExcel.Cells(V, H + 6) = "LE"
          objExcel.Cells(V, H + 7) = ADO3!numdoc
          objExcel.Cells(V, H + 8) = wAno + wMes
-         objExcel.Cells(V, H + 9) = wtotdsc
+         objExcel.Cells(V, H + 9) = wTotDsc
          
          wRegAct = wRegAct + 1
          V = V + 1
@@ -1328,25 +1329,25 @@ Private Sub cmdRecupera_Click()
    & " WHERE MES = '" + wMes + "' ")
    Db.CommitTrans
 
-   Dim micadena As String, wcarpnp As Long, wcodben As String, wnumdoc As String, wtotdsc As Currency
+   Dim micadena As String, wCarPNP As Long, wcodben As String, wNumDoc As String, wTotDsc As Currency
     'configura
    Open file For Input As #1 ' Abre el archivo para recibir los datos.
     ' Repite el bucle hasta el final del archivo.
    Do While Not EOF(1)
       Line Input #1, micadena
       
-      wcarpnp = Mid(micadena, 10, 10)
+      wCarPNP = Mid(micadena, 10, 10)
       wcodben = Mid(micadena, 20, 2)
-      wnumdoc = Mid(micadena, 24, 8)
-      wtotdsc = Mid(micadena, 40, 10)
+      wNumDoc = Mid(micadena, 24, 8)
+      wTotDsc = Mid(micadena, 40, 10)
       wSoc = 0: wCod = 0: wIns = 0
-      aa = Leerado8("SELECT * FROM MAESOCIO WHERE NUMDOC = '" + wnumdoc + "' AND CARNETPNP > 0  ")
+      aa = Leerado8("SELECT * FROM MAESOCIO WHERE NUMDOC = '" + wNumDoc + "' AND CARNETPNP > 0  ")
       If aa = 0 Then
-         MsgBox "DNI " + wnumdoc + " NO Existe"
+         MsgBox "DNI " + wNumDoc + " NO Existe"
          Exit Sub
       End If
       If aa > 1 Then
-         MsgBox "DNI " + wnumdoc + " Esta Duplicado"
+         MsgBox "DNI " + wNumDoc + " Esta Duplicado"
          Exit Sub
       End If
       wSoc = ADO8!codsocio
@@ -1366,14 +1367,14 @@ Private Sub cmdRecupera_Click()
          & " (MES, CODSOCIO, CODIGO, INS, E_SOCIO, CARNETPNP, NUMDOC, CODBENI, FECENV, FECDSC, TIPCOB ) " _
          & " VALUES " _
          & " ('" + wMes + "', " + Str(wSoc) + ", " + Str(wCod) + ", " + Str(wIns) + ", '" + wE_S + "', " _
-         & "  " + Str(wcarpnp) + ", '" + wnumdoc + "', '" + wcodben + "', '01/08/2018', '01/08/2018', '" + wTipCob + "' ) ")
+         & "  " + Str(wCarPNP) + ", '" + wNumDoc + "', '" + wcodben + "', '01/08/2018', '01/08/2018', '" + wTipCob + "' ) ")
          Db.CommitTrans
       End If
       Set ADO8 = Nothing
          
       Db.BeginTrans
       Db.Execute ("UPDATE CAJMPCAB " _
-      & " SET TOTENVIO = " + Str(wtotdsc) + " " _
+      & " SET TOTENVIO = " + Str(wTotDsc) + " " _
       & " WHERE      MES = '" + wMes + "' AND " _
       & "       CODSOCIO = " + Str(wSoc) + " ")
       Db.CommitTrans
@@ -1386,18 +1387,18 @@ Private Sub cmdRecupera_Click()
    Do While Not EOF(1)
       Line Input #1, micadena
     
-      wcarpnp = Mid(micadena, 10, 10)
+      wCarPNP = Mid(micadena, 10, 10)
       wcodben = Mid(micadena, 20, 2)
-      wnumdoc = Mid(micadena, 24, 8)
-      wtotdsc = Mid(micadena, 40, 10)
+      wNumDoc = Mid(micadena, 24, 8)
+      wTotDsc = Mid(micadena, 40, 10)
       wSoc = 0: wCod = 0: wIns = 0
-      aa = Leerado8("SELECT * FROM MAESOCIO WHERE NUMDOC = '" + wnumdoc + "' AND CARNETPNP > 0 ")
+      aa = Leerado8("SELECT * FROM MAESOCIO WHERE NUMDOC = '" + wNumDoc + "' AND CARNETPNP > 0 ")
       If aa = 0 Then
-         MsgBox "DNI " + wnumdoc + " NO Existe"
+         MsgBox "DNI " + wNumDoc + " NO Existe"
          Exit Sub
       End If
       If aa > 1 Then
-         MsgBox "DNI " + wnumdoc + " Esta Duplicado"
+         MsgBox "DNI " + wNumDoc + " Esta Duplicado"
          Exit Sub
       End If
       wSoc = ADO8!codsocio
@@ -1417,14 +1418,14 @@ Private Sub cmdRecupera_Click()
          & " (MES, CODSOCIO, CODIGO, INS, E_SOCIO, CARNETPNP, NUMDOC, CODBENI, FECENV, FECDSC, TIPCOB ) " _
          & " VALUES " _
          & " ('" + wMes + "', " + Str(wSoc) + ", " + Str(wCod) + ", " + Str(wIns) + ", '" + wE_S + "', " _
-         & "  " + Str(wcarpnp) + ", '" + wnumdoc + "', '" + wcodben + "', '01/08/2018', '01/08/2018', '" + wTipCob + "' ) ")
+         & "  " + Str(wCarPNP) + ", '" + wNumDoc + "', '" + wcodben + "', '01/08/2018', '01/08/2018', '" + wTipCob + "' ) ")
          Db.CommitTrans
       End If
       Set ADO8 = Nothing
          
       Db.BeginTrans
       Db.Execute ("UPDATE CAJMPCAB " _
-      & " SET DSCCAJMP = " + Str(wtotdsc) + " " _
+      & " SET DSCCAJMP = " + Str(wTotDsc) + " " _
       & " WHERE      MES = '" + wMes + "' AND " _
       & "       CODSOCIO = " + Str(wSoc) + " ")
       Db.CommitTrans
@@ -1450,7 +1451,7 @@ Private Sub cmdRecupera_Click()
    & "       CODASIG5 = 0 ")
    Db.CommitTrans
 
-   Dim wDscCajmp As Currency, wDscDifer As Currency, wTotEnvio As Currency
+   Dim wDscCajMp As Currency, wDscDifer As Currency, wTotEnvio As Currency
    Dim wSocSocio As Integer, wSocAsig1 As Integer, wSocAsig2 As Integer, wSocAsig3 As Integer, wSocAsig4 As Integer, wSocAsig5 As Integer
    Dim wCodSocio As Long, wCodAsig1 As Long, wCodAsig2 As Long, wCodAsig3 As Long, wCodAsig4 As Long, wCodAsig5 As Long
    Dim wInsSocio As Integer, wInsAsig1 As Integer, wInsAsig2 As Integer, wInsAsig3 As Integer, wInsAsig4 As Integer, wInsAsig5 As Integer
@@ -1465,7 +1466,7 @@ Private Sub cmdRecupera_Click()
       ADO8.MoveFirst
       Do While Not ADO8.EOF
          wTotEnvio = ADO8!totenvio
-         wDscCajmp = ADO8!dsccajmp
+         wDscCajMp = ADO8!dsccajmp
          wDscDifer = ADO8!dscdifer
          wSocSocio = ADO8!codsocio
          wSocAsig1 = ADO8!codasig1
@@ -1598,7 +1599,7 @@ Private Sub cmdRecupera_Click()
          End If
    
          If wNetSocio + wNetAsig1 + wNetAsig2 + wNetAsig3 + wNetAsig4 + wNetAsig5 <> wTotEnvio Or _
-            wDscSocio + wDscAsig1 + wDscAsig2 + wDscAsig3 + wDscAsig4 + wDscAsig5 <> wDscCajmp Then
+            wDscSocio + wDscAsig1 + wDscAsig2 + wDscAsig3 + wDscAsig4 + wDscAsig5 <> wDscCajMp Then
             
             
             

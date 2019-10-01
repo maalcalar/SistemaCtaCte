@@ -402,6 +402,9 @@ Private Sub cmdOK_Click()
         MENUTES = ADOMaster!cxc_tesor
         MENUCON = ADOMaster!cxc_consulta
         MENUSER = ADOMaster!cxc_servicios
+	MENUBCP = ADOMaster!cxc_bcp
+	MENURPT = ADOMaster!cxc_repteso
+	MENUCNT = ADOMaster!cxc_cont
         SUPERVISOR = .Fields("SUPERVISOR")
         wnomusu = .Fields("NOMBRE")
         wcodusu = .Fields("CODIGO")

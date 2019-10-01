@@ -106,6 +106,7 @@ Public wprinter As String * 1
 '
 Public MENUMAE As Boolean, MENUELE As Boolean, MENUGES As Boolean, MENUAPO As Boolean
 Public MENUDIE As Boolean, MENUCAJ As Boolean, MENUTES As Boolean, MENUCON As Boolean, MENUSER As Boolean
+Public MENUBCP As Boolean, MENURPT As Boolean, MENUCNT As Boolean
 Public wporigv As Single
 
 Public wswprint As String * 1
